@@ -1,4 +1,4 @@
-# Personal Budgeting App - Backend API
+# Personal Budgeting App
 
 This is the backend REST API for a personal budgeting app, built with ExpressJS. The API provides endpoints to manage user accounts and transactions. The API is hosted on https://budget-app-backend-q5w3.onrender.com.
 
