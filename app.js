@@ -15,6 +15,11 @@ app.get("/", (req, res) => {
     res.send("Welcome to Budget App! For Docs, please visit ");
 });
 
+//Error Handling
+app.get("*", (req, res) => {
+    res.status(404).json({"error" : "Page Not Found"})
+});
+
 
 
 module.exports = app;
