@@ -15,11 +15,11 @@ transactions.get("/", (req, res) => {
 
 //Create new transaction
 transactions.post("/", transactionsValidator, (req, res) => {
-    console.log("POST /transactions", req.body);
     transactionsArray.push(req.body);
     res.status(201).json(transactionsArray[transactionsArray.length - 1])
-
 });
+
+   
 
 //Get one transaction by index
 transactions.get("/:index", (req, res) => {
@@ -35,6 +35,7 @@ transactions.get("/:index", (req, res) => {
 transactions.put("/:index", transactionsValidator, (req, res) => {
     const { index } = req.params;
     if (transactionsArray[index]) {
+        transactionsArray[index] = req.body
         res.status(200).json(transactionsArray[index]);
     } else {
         res.status(404).json({error: "Not Found"})
