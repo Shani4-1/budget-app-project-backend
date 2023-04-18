@@ -4,6 +4,7 @@ const express = require("express");
 // Configurations
 const transactions = express.Router();
 const transactionsArray = require("../models/transactions.js");
+const transactionsValidator = require("../validators/validators.js");
 
 //Routes
 
@@ -13,7 +14,7 @@ transactions.get("/", (req, res) => {
 });
 
 //Create new transaction
-transactions.post("/", (req, res) => {
+transactions.post("/", transactionsValidator, (req, res) => {
     console.log("POST /transactions", req.body);
     transactionsArray.push(req.body);
     res.status(201).json(transactionsArray[transactionsArray.length - 1])
@@ -31,7 +32,7 @@ transactions.get("/:index", (req, res) => {
 });
 
 //Update transaction 
-transactions.put("/:index", (req, res) => {
+transactions.put("/:index", transactionsValidator, (req, res) => {
     const { index } = req.params;
     if (transactionsArray[index]) {
         res.status(200).json(transactionsArray[index]);
