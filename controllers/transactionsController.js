@@ -1,5 +1,6 @@
 // Dependencies
 const express = require("express");
+const { v4: uuidv4 } = require('uuid');
 
 // Configurations
 const transactions = express.Router();
@@ -10,14 +11,21 @@ const transactionsValidator = require("../validators/validators.js");
 
 //All transactions
 transactions.get("/", (req, res) => {
+    transactionsArray.forEach(transaction => {
+      if (!transaction.id) {
+        transaction.id = uuidv4();
+      }
+    });
     res.send(transactionsArray)
-});
+  });
 
 //Create new transaction
 transactions.post("/", transactionsValidator, (req, res) => {
-    transactionsArray.push(req.body);
-    res.status(201).json(transactionsArray[transactionsArray.length - 1])
-});
+    const newTransaction = req.body;
+    newTransaction.id = uuidv4();
+    transactionsArray.push(newTransaction);
+    res.status(201).json(newTransaction);
+  });
 
    
 
@@ -34,13 +42,11 @@ transactions.get("/:index", (req, res) => {
 //Update transaction 
 transactions.put("/:index", transactionsValidator, (req, res) => {
     const { index } = req.params;
-    if (transactionsArray[index]) {
-        transactionsArray[index] = req.body
-        res.status(200).json(transactionsArray[index]);
-    } else {
-        res.status(404).json({error: "Not Found"})
-    }
-});
+    const updatedTransaction = req.body;
+    updatedTransaction.id = transactionsArray[index].id;
+    transactionsArray[index] = updatedTransaction;
+    res.status(200).json(updatedTransaction);
+  });
 
 //Delete transaction
 transactions.delete("/:index", (req, res) => {
